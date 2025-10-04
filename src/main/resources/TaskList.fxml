@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.TaskController"
+            prefWidth="600" prefHeight="400">
+
+    <top>
+        <ToolBar>
+            <Button text="Add Task" onAction="#handleAddTask"/>
+            <Button text="Delete Task" onAction="#handleDeleteTask"/>
+            <Button text="Edit Task" onAction="#handleEditTask"/>
+            <Button text="Calendar View" onAction="#handleOpenCalendar"/>
+            <Button text="Done Tasks" onAction="#handleOpenDoneTasks"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <TableView fx:id="taskTable">
+            <columns>
+                <TableColumn fx:id="titleColumn" text="Title" prefWidth="150"/>
+                <TableColumn fx:id="descColumn" text="Description" prefWidth="200"/>
+                <TableColumn fx:id="dueDateColumn" text="Due Date" prefWidth="100"/>
+                <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

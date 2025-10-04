@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.CalendarController"
+            prefWidth="600" prefHeight="400">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+            <children>
+                <Label text="7-Day Calendar View" style="-fx-font-size: 18px;"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Back to Task List" onAction="#handleBack"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="calendarTable">
+            <columns>
+                <TableColumn fx:id="titleColumn" text="Task" prefWidth="200"/>
+                <TableColumn fx:id="dueDateColumn" text="Due Date" prefWidth="150"/>
+                <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

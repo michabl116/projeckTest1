@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-243.26574.91">
+    <data-source name="@localhost" uuid="897cdf41-102a-4568-aff2-29146937dc1d">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" />
+      <schema-mapping />
+    </data-source>
+    <data-source name="studyplanner@localhost" uuid="ead35a6f-f101-47c6-8b86-1edaf3860dd4">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" />
+      <schema-mapping />
+    </data-source>
+    <data-source name="taskdb@localhost" uuid="d588de4f-6132-4734-9421-54e3e116d1f6">
+      <database-info product="MariaDB" version="11.3.0-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="11.3.0" exact-driver-version="3.3">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="@" />
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+    <data-source name="studyplanner@localhost [2]" uuid="ee40383b-1db9-42b9-95d3-1b14019f2a99">
+      <database-info product="MariaDB" version="11.3.0-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="11.3.0" exact-driver-version="3.3">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="@" />
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>
