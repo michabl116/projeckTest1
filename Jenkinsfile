@@ -8,13 +8,13 @@ pipeline {
     }
 
     tools {
-        maven 'MAVEN_HOME'
+        maven 'Maven3'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Miro193/SEP01_Project.git'
+                git branch: 'main', url: 'https://github.com/michabl116/projeckTest1.git'
             }
         }
 
