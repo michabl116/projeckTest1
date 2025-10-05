@@ -20,13 +20,13 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat "mvn clean install -DskipTests"
+                bat "mvn clean install "
             }
         }
 
         stage('Unit Tests') {
             steps {
-                bat 'Tests skipped for pipeline validation'
+                bat 'mvn test'
             }
         }
 
