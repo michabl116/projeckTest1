@@ -2,6 +2,8 @@ package dao;
 
 import model.Task;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,12 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskDaoTest {
     private static Connection conn;
     private TaskDao taskDao;
+    private Task task;
 
     @BeforeAll
     static void setupDB() throws Exception {
-        conn = DriverManager.getConnection(
-                "jdbc:mariadb://localhost:3306/StudyPlannerTest", "demo_user", "demo_pass"
-        );
+//        taskDao = new TaskDao();
+        conn = DriverManager.getConnection("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
+        Statement stmt = conn.createStatement();
+        stmt.execute("CREATE TABLE task (task_id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, title VARCHAR(255), description VARCHAR(255), status VARCHAR(50), dueDate TIMESTAMP)");
     }
 
     @AfterAll
@@ -30,11 +34,12 @@ class TaskDaoTest {
     @BeforeEach
     void setUp() {
         taskDao = new TaskDao(conn);
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("DELETE FROM Task");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    }
+
+    @AfterEach
+    void cleanUp() throws Exception {
+        Statement stmt = conn.createStatement();
+        stmt.execute("DELETE FROM task");
     }
 
     @Test
@@ -72,11 +77,11 @@ class TaskDaoTest {
         taskDao.update(task);
 
         Task updated = taskDao.find(task.getId());
-        assertNotNull(updated);
         assertEquals("Updated Title", updated.getTitle());
     }
 
     @Test
+//    @DisplayName("Test to findAll user tasks")
     void testFindAll() {
         Task task1 = new Task();
         task1.setUserId(3);
@@ -137,11 +142,15 @@ class TaskDaoTest {
         List<Task> user1Tasks = taskDao.getTasksByUserId(1);
         assertNotNull(user1Tasks);
         assertEquals(1, user1Tasks.size());
+        assertEquals(1, user1Tasks.get(0).getUserId());
         assertEquals("Task 1", user1Tasks.get(0).getTitle());
 
         List<Task> user2Tasks = taskDao.getTasksByUserId(2);
         assertNotNull(user2Tasks);
         assertEquals(1, user2Tasks.size());
+        assertEquals(2, user2Tasks.get(0).getUserId());
         assertEquals("Task 2", user2Tasks.get(0).getTitle());
+
     }
+
 }
