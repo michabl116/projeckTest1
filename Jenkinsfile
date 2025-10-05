@@ -61,19 +61,16 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            when {
-                branch 'main'
-            }
             steps {
                 script {
                     echo "Pushing Docker image to Docker Hub..."
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
                         docker.image(env.FULL_IMAGE_NAME).push()
-
                     }
                 }
             }
         }
+
     }
 
     post {
