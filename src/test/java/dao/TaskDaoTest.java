@@ -23,7 +23,8 @@ class TaskDaoTest {
 //        taskDao = new TaskDao();
         conn = DriverManager.getConnection("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
         Statement stmt = conn.createStatement();
-        stmt.execute("CREATE TABLE task (task_id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, title VARCHAR(255), description VARCHAR(255), status VARCHAR(50), dueDate TIMESTAMP)");
+        stmt.execute("CREATE TABLE task (id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, title VARCHAR(255), description VARCHAR(255), status VARCHAR(50), dueDate TIMESTAMP)");
+
     }
 
     @AfterAll
