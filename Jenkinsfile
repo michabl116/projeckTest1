@@ -1,10 +1,11 @@
 pipeline {
     agent any
+
     environment {
         DOCKER_IMAGE_NAME = "michabl/sep01-project"
         DOCKER_CREDENTIALS_ID = "Docker_Hub"
         DOCKER_IMAGE_TAG = 'latest'
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}" // Solo si Jenkins corre en Windows
     }
 
     tools {
@@ -12,6 +13,12 @@ pipeline {
     }
 
     stages {
+        stage('Verify Docker') {
+            steps {
+                bat 'docker --version'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/michabl116/projeckTest1.git'
@@ -20,13 +27,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat "mvn clean install "
-            }
-        }
-
-        stage('Unit Tests') {
-            steps {
-                bat 'mvn test'
+                bat 'mvn clean install'
             }
         }
 
