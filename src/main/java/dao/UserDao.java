@@ -5,7 +5,7 @@ import java.sql.*;
 import model.User;
 public class UserDao {
     public void register(User user) {
-        String sql = "INSERT INTO users (username, password, confirmPassword) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Users (username, password, confirmPassword) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionDB.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -26,7 +26,7 @@ public class UserDao {
     }
 
     public User login(String username, String password) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
         try (Connection conn = ConnectionDB.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

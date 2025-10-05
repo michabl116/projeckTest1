@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-container
+    environment:
+      MARIADB_ROOT_PASSWORD: root123
+      MARIADB_DATABASE: StudyPlanner
+      MARIADB_USER: demo_user
+      MARIADB_PASSWORD: demo_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  app:
+    image: michalb/studyplanner:latest  # 👈 imagen desde Docker Hub
+    container_name: studyplanner-app
+    depends_on:
+      - mariadb
+    environment:
+      DISPLAY: host.docker.internal:0.0
+    ports:
+      - "8080:8080"  # 👈 si tu app tiene GUI o API web
+    restart: unless-stopped

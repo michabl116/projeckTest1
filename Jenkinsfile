@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE_NAME = "saeid1993/sep01-project"
+        DOCKER_IMAGE_NAME = "michabl/sep01-project"
         DOCKER_CREDENTIALS_ID = "Docker_Hub"
         DOCKER_IMAGE_TAG = 'latest'
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
