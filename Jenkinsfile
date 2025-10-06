@@ -70,9 +70,10 @@ pipeline {
                 }
             }
         }
-        stage('Run with Docker Compose') {
+        stage('Clean Docker Environment') {
             steps {
-                bat 'docker-compose -f docker-compose.yml up --build -d'
+                bat 'docker-compose down --remove-orphans --volumes'
+                bat 'docker system prune -f'
             }
         }
         stage('Wait for MariaDB') {
