@@ -70,6 +70,18 @@ pipeline {
                 }
             }
         }
+        stage('Deploy with Docker Compose') {
+            steps {
+                bat 'docker-compose up -d'
+            }
+        }
+
+        stage('Verify Containers') {
+            steps {
+                bat 'docker ps'
+            }
+        }
+
         stage('Clean Docker Environment') {
             steps {
                 bat 'docker-compose down --remove-orphans --volumes'
