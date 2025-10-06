@@ -75,6 +75,19 @@ pipeline {
                 bat 'docker-compose -f docker-compose.yml up --build -d'
             }
         }
+        stage('Wait for MariaDB') {
+            steps {
+                bat '''
+                for /l %%x in (1, 1, 10) do (
+                    docker exec mariadb-container mariadb-admin ping -h localhost && exit /b 0
+                    timeout /t 5 >nul
+                )
+                echo MariaDB no respondió a tiempo
+                exit /b 1
+                '''
+            }
+        }
+
 
     }
 

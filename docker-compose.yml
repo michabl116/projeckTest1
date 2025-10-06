@@ -6,14 +6,8 @@ services:
     container_name: mariadb-container
     environment:
       MARIADB_ROOT_PASSWORD: root123
-      MARIADB_DATABASE: StudyPlanner
-      MARIADB_USER: demo_user
-      MARIADB_PASSWORD: demo_pass
-    ports:
-      - "3306:3306"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: unless-stopped
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
       interval: 5s
@@ -21,13 +15,10 @@ services:
       retries: 10
 
   app:
-    image: michalb/studyplanner:latest
+    image: michabl/sep01-project:latest
     container_name: studyplanner-app
     depends_on:
       mariadb:
         condition: service_healthy
     environment:
       DISPLAY: host.docker.internal:0.0
-    ports:
-      - "8081:8080"
-    restart: unless-stopped
