@@ -1,13 +1,13 @@
 pipeline {
     agent any
 
-   environment {
-       DOCKER_IMAGE_NAME = "michabl/sep01-project"
-       DOCKER_IMAGE_TAG = "latest"
-       DOCKER_CREDENTIALS_ID = "Docker_Hub"
-       FULL_IMAGE_NAME = "michabl/sep01-project:latest"
-       PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
-   }
+    environment {
+        DOCKER_IMAGE_NAME = "michabl/sep01-project"
+        DOCKER_IMAGE_TAG = "latest"
+        DOCKER_CREDENTIALS_ID = "Docker_Hub"
+        FULL_IMAGE_NAME = "michabl/sep01-project:latest"
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
+    }
 
     tools {
         maven 'Maven3'
@@ -55,7 +55,6 @@ pipeline {
                 script {
                     echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                     docker.build(env.FULL_IMAGE_NAME)
-
                 }
             }
         }
@@ -70,9 +69,23 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy with Docker Compose') {
             steps {
                 bat 'docker-compose up -d'
+            }
+        }
+
+        stage('Wait for MariaDB') {
+            steps {
+                bat '''
+                for /l %%x in (1, 1, 10) do (
+                    docker exec mariadb-container mariadb-admin ping -h localhost && exit /b 0
+                    timeout /t 5 >nul
+                )
+                echo MariaDB no respondió a tiempo
+                exit /b 1
+                '''
             }
         }
 
@@ -88,20 +101,6 @@ pipeline {
                 bat 'docker system prune -f'
             }
         }
-        stage('Wait for MariaDB') {
-            steps {
-                bat '''
-                for /l %%x in (1, 1, 10) do (
-                    docker exec mariadb-container mariadb-admin ping -h localhost && exit /b 0
-                    timeout /t 5 >nul
-                )
-                echo MariaDB no respondió a tiempo
-                exit /b 1
-                '''
-            }
-        }
-
-
     }
 
     post {
