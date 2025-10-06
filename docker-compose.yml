@@ -14,14 +14,20 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   app:
-    image: michalb/studyplanner:latest  # 👈 imagen desde Docker Hub
+    image: michalb/studyplanner:latest
     container_name: studyplanner-app
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     environment:
       DISPLAY: host.docker.internal:0.0
     ports:
-      - "8080:8080"  # 👈 si tu app tiene GUI o API web
+      - "8081:8080"
     restart: unless-stopped
