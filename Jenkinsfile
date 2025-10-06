@@ -70,6 +70,11 @@ pipeline {
                 }
             }
         }
+        stage('Run with Docker Compose') {
+            steps {
+                bat 'docker-compose -f docker-compose.yml up --build -d'
+            }
+        }
 
     }
 
