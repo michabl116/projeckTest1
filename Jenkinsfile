@@ -83,7 +83,7 @@ pipeline {
                     docker exec mariadb-container mariadb-admin ping -h localhost && exit /b 0
                     timeout /t 5 >nul
                 )
-                echo MariaDB no respondió a tiempo
+                echo MariaDB no respondió
                 exit /b 1
                 '''
             }
