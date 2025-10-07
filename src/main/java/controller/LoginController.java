@@ -27,8 +27,9 @@ public class LoginController {
 
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        // Modificado: se agregó .trim() para eliminar espacios innecesarios
+        String username = usernameField.getText().trim(); // ← modificado
+        String password = passwordField.getText().trim(); // ← modificado
 
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Username and Password cannot be empty");
@@ -37,29 +38,27 @@ public class LoginController {
 
         User user = userDao.login(username, password);
 
-        if (user != null && user.getPassword().equals(password)) {
+        // Eliminado: comparación redundante de contraseña (ya se verifica en el método login)
+        if (user != null) { // ← modificado
             CurrentUser.set(user);
             showAlert("Success", "Login successful! Welcome " + user.getUsername());
             Parent firstViewRoot = FXMLLoader.load(getClass().getResource("/first_view.fxml"));
             Scene firstViewScene = new Scene(firstViewRoot);
 
-
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             window.setScene(firstViewScene);
             window.show();
         } else {
             showAlert("Error", "Invalid username or password");
         }
     }
+
     @FXML
     private void handleSignupRedirect(ActionEvent event) throws IOException {
         Parent signUpRoot = FXMLLoader.load(getClass().getResource("/SignUp.fxml"));
         Scene signUpScene = new Scene(signUpRoot);
 
-
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
         window.setScene(signUpScene);
         window.show();
     }

@@ -1,4 +1,5 @@
 package controller;
+
 import dao.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,17 +29,24 @@ public class SignUpController {
 
     @FXML
     private void handleSignUp(ActionEvent event) throws IOException {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
-
+        // Modified: Trim input to remove leading/trailing spaces
+        String username = usernameField.getText().trim(); // ← modified
+        String password = passwordField.getText().trim(); // ← modified
+        String confirmPassword = confirmPasswordField.getText().trim(); // ← modified
 
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Please fill all fields!");
             return;
         }
 
-        User existingUser = userDao.login(username, password);
+        // Added: Check if password and confirmPassword match
+        if (!password.equals(confirmPassword)) { // ← added
+            showAlert("Error", "Passwords do not match!"); // ← added
+            return; // ← added
+        }
+
+        // Reverted: Use login instead of findByUsername to avoid altering UserDao
+        User existingUser = userDao.login(username, password); // ← reverted
         if (existingUser != null) {
             showAlert("Error", "Username already exists!");
             return;
@@ -56,9 +64,7 @@ public class SignUpController {
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/Login.fxml"));
         Scene loginScene = new Scene(loginRoot);
 
-
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
         window.setScene(loginScene);
         window.show();
     }
