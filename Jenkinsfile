@@ -6,8 +6,8 @@ pipeline {
         DOCKER_IMAGE_TAG = "latest"
         DOCKER_CREDENTIALS_ID = "Docker_Hub"
         FULL_IMAGE_NAME = "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-        COMPOSE_DIR = "C:/Users/mihu1/IdeaProjects/projectTest1" // ← Ruta donde está tu docker-compose.yml
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}" // ← Asegura que Jenkins encuentre Docker
+        COMPOSE_DIR = "C:/Users/mihul/IdeaProjects/projectTest1" // ← Asegúrate que esta ruta sea correcta
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}" // ← Incluye Docker en el PATH
     }
 
     tools {
@@ -74,6 +74,9 @@ pipeline {
 
         stage('Desplegar con Docker Compose') {
             steps {
+                script {
+                    echo "Entrando a carpeta de Docker Compose: ${COMPOSE_DIR}"
+                }
                 dir("${COMPOSE_DIR}") {
                     bat 'docker-compose down --remove-orphans --volumes'
                     bat 'docker-compose up -d'
