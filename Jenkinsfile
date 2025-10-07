@@ -6,8 +6,7 @@ pipeline {
         DOCKER_IMAGE_TAG = "latest"
         DOCKER_CREDENTIALS_ID = "Docker_Hub"
         FULL_IMAGE_NAME = "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-        COMPOSE_DIR = "C:/Users/mihul/IdeaProjects/projectTest1" // ← Asegúrate que esta ruta sea correcta
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}" // ← Incluye Docker en el PATH
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
     }
 
     tools {
@@ -55,8 +54,7 @@ pipeline {
         stage('Construir imagen Docker') {
             steps {
                 script {
-                    echo "Construyendo imagen: ${FULL_IMAGE_NAME}"
-                    docker.build(FULL_IMAGE_NAME)
+                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
                 }
             }
         }
@@ -64,9 +62,8 @@ pipeline {
         stage('Subir imagen a Docker Hub') {
             steps {
                 script {
-                    echo "Subiendo imagen a Docker Hub..."
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        docker.image(FULL_IMAGE_NAME).push()
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
@@ -74,10 +71,7 @@ pipeline {
 
         stage('Desplegar con Docker Compose') {
             steps {
-                script {
-                    echo "Entrando a carpeta de Docker Compose: ${COMPOSE_DIR}"
-                }
-                dir("${COMPOSE_DIR}") {
+                dir('C:/Users/mihul/IdeaProjects/projectTest1') {
                     bat 'docker-compose down --remove-orphans --volumes'
                     bat 'docker-compose up -d'
                 }
@@ -100,6 +94,15 @@ pipeline {
         stage('Verificar contenedores') {
             steps {
                 bat 'docker ps'
+            }
+        }
+
+        stage('Limpiar entorno Docker') {
+            steps {
+                dir('C:/Users/mihul/IdeaProjects/projectTest1') {
+                    bat 'docker-compose down --remove-orphans --volumes'
+                }
+                bat 'docker system prune -f'
             }
         }
     }
