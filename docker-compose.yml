@@ -13,8 +13,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    networks: # ← añadido
-      - backend # ← añadido
+    networks:
+      - backend
 
   app:
     image: michabl/sep01-project:latest
@@ -24,8 +24,8 @@ services:
         condition: service_healthy
     environment:
       DISPLAY: host.docker.internal:0.0
-    networks: # ← añadido
-      - backend # ← añadido
+    networks:
+      - backend
 
-networks: # ← añadido
+networks:
   backend:
