@@ -69,6 +69,14 @@ pipeline {
                 }
             }
         }
+        stage('Clean Conflicting Containers')
+            steps {
+                bat'''
+                docker ps -a --filter "name=mariadb-container" --format "{{.ID}}" > temp.txt
+                        for /f %%i in (temp.txt) do docker rm -f %%i
+                        del temp.txt
+                        '''
+            }
 
         stage('Deploy with Docker Compose') {
             steps {
@@ -83,7 +91,7 @@ pipeline {
                     docker exec mariadb-container mariadb-admin ping -h localhost && exit /b 0
                     timeout /t 5 >nul
                 )
-                echo MariaDB no respondió
+                echo MariaDB no respondió a tiempo
                 exit /b 1
                 '''
             }
