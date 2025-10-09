@@ -77,6 +77,16 @@ pipeline {
                 del temp.txt
                 '''
             }
+            stage('Clean Conflicting App Container') {
+                steps {
+                    bat '''
+                    docker ps -a --filter "name=studyplanner-app" --format "{{.ID}}" > temp_app.txt
+                    for /f %%i in (temp_app.txt) do docker rm -f %%i
+                    del temp_app.txt
+                    '''
+                }
+            }
+
         }
 
 
