@@ -69,14 +69,16 @@ pipeline {
                 }
             }
         }
-        stage('Clean Conflicting Containers')
+        stage('Clean Conflicting Containers') {
             steps {
-                bat'''
+                bat '''
                 docker ps -a --filter "name=mariadb-container" --format "{{.ID}}" > temp.txt
-                        for /f %%i in (temp.txt) do docker rm -f %%i
-                        del temp.txt
-                        '''
+                for /f %%i in (temp.txt) do docker rm -f %%i
+                del temp.txt
+                '''
             }
+        }
+
 
         stage('Deploy with Docker Compose') {
             steps {
