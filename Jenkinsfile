@@ -49,15 +49,6 @@ pipeline {
                 jacoco execPattern: 'target/jacoco.exec'
             }
         }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-                    docker.build(env.FULL_IMAGE_NAME)
-                }
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 bat '''
@@ -70,6 +61,17 @@ pipeline {
 
 
 
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    echo "Pushing Docker image to Docker Hub..."
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
+                        docker.image(env.FULL_IMAGE_NAME).push()
+                    }
+                }
+            }
+        }
         stage('Clean Conflicting Containers') {
             steps {
                 bat '''
