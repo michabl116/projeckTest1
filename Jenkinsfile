@@ -99,6 +99,30 @@ pipeline {
                 bat 'docker-compose up -d'
             }
         }
+        stage('Validate Container Creation') {
+            steps {
+                bat '''
+                echo Verificando que los contenedores se han creado correctamente...
+
+                docker ps -a --filter "name=mariadb-container" --format "MariaDB: {{.Status}}" > verify.txt
+                docker ps -a --filter "name=studyplanner-app" --format "App: {{.Status}}" >> verify.txt
+
+                findstr "MariaDB:" verify.txt >nul || (
+                    echo ERROR: El contenedor mariadb-container no fue creado.
+                    exit /b 1
+                )
+
+                findstr "App:" verify.txt >nul || (
+                    echo ERROR: El contenedor studyplanner-app no fue creado.
+                    exit /b 1
+                )
+
+                type verify.txt
+                del verify.txt
+                '''
+            }
+        }
+
 
         stage('Wait for MariaDB') {
             steps {
