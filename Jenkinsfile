@@ -58,17 +58,18 @@ pipeline {
                 }
             }
         }
-
-        stage('Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
-                script {
-                    echo "Pushing Docker image to Docker Hub..."
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        docker.image(env.FULL_IMAGE_NAME).push()
-                    }
-                }
+                bat '''
+                echo Desactivando BuildKit para evitar errores de EOF...
+                set DOCKER_BUILDKIT=0
+                docker build -t michabl/sep01-project:latest .
+                '''
             }
         }
+
+
+
         stage('Clean Conflicting Containers') {
             steps {
                 bat '''
